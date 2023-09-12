@@ -54,3 +54,8 @@ export const navItems=[
     //     url:'/logout'
     // },
 ]
+
+export const clients=['Select Client','IndiGo','easyJet','Lufthansa','Wizz Air']
+export const trips=['T2930','T2940','T2852','T2955','T3255']
+export const productTypes=['Plane','Halicopter','Drinks','Flowers','Private Jet','Air Bus'];
+export const products=['Falcon 8X TBA/LTI','Falcon 9X TBA/LTI','Falcon 11X TBA/LTI','Falcon 2X TBA/LTI']
