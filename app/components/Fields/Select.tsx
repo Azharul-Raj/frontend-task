@@ -21,11 +21,11 @@ function Select({id,label,register,errors,options,required,border,width}:SelectP
         'rounded-full px-2':'rounded-lg'} focus:outline-none caret-gray-900`} {...register(id,{required})} name="" id="">
             {
                 options?.map((value,i)=>(
-                    <option key={i} value={value}>{value}</option>
+                    <option className="text-xs md:text-base" key={i} value={value}>{value}</option>
                 ))
             }
         </select>
-            <div className="h-6 absolute right-4 top-4 pointer-events-none">
+            <div className="h-6 hidden md:block absolute right-4 top-4 pointer-events-none">
                 <FiChevronDown/>
             </div>
         </div>

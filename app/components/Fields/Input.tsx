@@ -17,7 +17,7 @@ function Input({id,label,type,required,errors,register,placeholder,border}:Input
   return (
     <div className={`w-full py-2`}>
         {label &&<label className='text-gray-900 block pb-1 text-lg font-semibold'>{label}</label>}
-      <input placeholder={placeholder}  className={`py-2 w-full px-1 border border-gray-400 ${border?
+      <input placeholder={placeholder}  className={`py-2 w-16 md:w-full px-1 border border-gray-400 ${border?
         'rounded':'rounded-lg'} focus:outline-none`} id={id} type={type?type:'text'} {...register(id,{required})} />
       
       {errors && <p>{errors.root?.message}</p> }
