@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* .bg-complete{
+background: linear-gradient(225deg, #BB65FF 0%, #4C6FFF 100%);
+}
+.bg-certificate{
+    background: linear-gradient(225deg, #FFA674 0%, #FF3737 100%);
+}
+.bg-progress{
+    background: linear-gradient(225deg, #FF974D 0%, #FFE925 100%);
+}
+.bg-total{
+    background: linear-gradient(180deg, #20AF62 0%, #17E783 100%);
+} */
