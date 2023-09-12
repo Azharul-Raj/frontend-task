@@ -14,7 +14,6 @@ interface sidebarProps{
 
 function Sidebar({isOpen,setIsOpen}:sidebarProps) {
     const pathname=usePathname();
-    console.log(pathname)
   return (
     <aside
     //   ref={sidebar}

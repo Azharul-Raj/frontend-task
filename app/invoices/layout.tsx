@@ -15,7 +15,7 @@ export default function DashboardLayout({
       {/* Sidebar */}
       <Sidebar isOpen={isOpen} setIsOpen={setIsOpen}/>
       {/* Sidebar */}
-      <div className="ml-5">
+      <div className="ml-0 lg:ml-5 flex flex-col flex-1 overflow-x-hidden overflow-y-auto">
         <DashboardHeader isOpen={isOpen} setIsOpen={setIsOpen}/>
         {children}
       </div>

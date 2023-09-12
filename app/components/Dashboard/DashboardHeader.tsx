@@ -17,21 +17,21 @@ function DashboardHeader({isOpen,setIsOpen}:HeaderProps) {
   return (
     // <header className='sticky top-0 flex bg-gradient-to-r from-indigo-500 via-violet-500 to-violet-400 z-50'>
     <header className=' bg-white rounded-lg'>
-        <div className="flex justify-between mx-2 md:justify-around items-center py-2">
+        <div className="flex justify-between mx-2   items-center py-2">
             {/* HAMBURGER ICON */}
                 <div onClick={()=>setIsOpen(!isOpen)} className="space-y-1 mr-3 cursor-pointer lg:hidden">
-                    <div className="h-0.5 w-5 bg-white"></div>
-                    <div className="h-0.5 w-5 bg-white"></div>
-                    <div className="h-0.5 w-5 bg-white"></div>
+                    <div className="h-0.5 w-5 bg-black"></div>
+                    <div className="h-0.5 w-5 bg-black"></div>
+                    <div className="h-0.5 w-5 bg-black"></div>
                 </div>
             {/* HAMBURGER ICON */}
-            <div className="">
-            <form className='lg:w-[600px]' action="">
-              <div className="relative">
-                <div className="absolute top-3 left-1">
+            <div className="px-8">
+            <form className='lg:w-[500px]' action="">
+              <div className="relative  ">
+                <div className="absolute top-3 left-3">
                   <Image width={18} src={search} alt='search'/>
                 </div>
-              <input className='focus:outline-none py-2 pl-8 rounded-lg w-[80%] md:w-full' placeholder='Search here...' type="text" name="" id="" />
+              <input className='border focus:outline-none py-2 pl-8 rounded-full w-[80%] md:w-full' placeholder='Search here...' type="text" name="" id="" />
               </div>
             </form>
             </div>
