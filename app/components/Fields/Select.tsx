@@ -1,3 +1,4 @@
+"use client"
 import { FieldErrors, FieldValues, UseFormRegister } from "react-hook-form";
 import {FiChevronDown} from 'react-icons/fi'
 

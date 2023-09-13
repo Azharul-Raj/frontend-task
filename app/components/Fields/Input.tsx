@@ -1,5 +1,5 @@
-
-import {useForm,FieldErrors, FieldValues, UseFormRegister} from 'react-hook-form';
+"use client"
+import {FieldErrors, FieldValues, UseFormRegister} from 'react-hook-form';
 
 
 interface InputProps{

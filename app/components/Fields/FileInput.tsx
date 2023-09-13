@@ -1,6 +1,6 @@
-
+"use client"
 import React, { useRef, useState } from 'react';
-import { FieldError, FieldErrors, FieldErrorsImpl, FieldValues, UseFormRegister } from 'react-hook-form';
+import {  FieldErrors,  FieldValues, UseFormRegister } from 'react-hook-form';
 import { FiShare,FiX } from 'react-icons/fi';
 
 interface FileProps {
@@ -78,9 +78,7 @@ function FileInput({ id, label, placeholder, register, small, errors }: FileProp
           />
         </div>
       </div>
-      { errors && errors[id] && <p className="text-red-500">Image is required</p>}
-
-      {/* {errorMessage && <p>{errorMessage}</p>} */}
+      { errors && errors[id] ? <p className="text-red-500">Image is required</p>:''}
     </div>
   );
 }
