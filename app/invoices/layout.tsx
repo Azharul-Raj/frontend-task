@@ -2,6 +2,7 @@
 import { useState,useEffect } from 'react'
 import Sidebar from '../components/Sidebar/Sidebar'
 import DashboardHeader from '../components/Dashboard/DashboardHeader';
+import Spinner from '../components/Spinner';
 
 
 export default function DashboardLayout({
@@ -15,7 +16,7 @@ export default function DashboardLayout({
   useEffect(()=>{
     setIsMount(true)
   },[])
-  if(!isMount) return null
+  if(!isMount) return <Spinner/>
   return (
     <section className='h-screen flex bg-gray-100'>
       {/* Sidebar */}

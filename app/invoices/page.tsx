@@ -1,6 +1,7 @@
 "use client"
 import React from 'react'
 import { useFieldArray, useForm } from 'react-hook-form'
+import { useMutation, gql } from '@apollo/client'
 import FileInput from '../components/Fields/FileInput';
 import Select from '../components/Fields/Select';
 import { clients, productTypes, products, trips } from '../../data/data';
@@ -9,7 +10,17 @@ import { FormValues } from '../../types/types';
 import useStore from '../hooks/useStore';
 import { useRouter } from 'next/navigation';
 
-
+const CREATE_INVOICE = gql`
+  mutation CreateInvoice($input: InvoiceInput!) {
+    createInvoice(input: $input) {
+      id,
+      client,
+      image,
+      trip_no,
+      products
+    }
+  }
+`;
 
 function Invoice() {
   const { register, handleSubmit, reset, formState: { errors }, control } = useForm<FormValues |any>();
@@ -17,13 +28,22 @@ function Invoice() {
   const { append, remove, fields } = useFieldArray({
     name: 'products',
     control,
-  })
+    rules:{
+      required:"Fields are required."
+    }
+  });
+
+  const [createInvoice] = useMutation(CREATE_INVOICE);
   const setProducts=useStore((state)=>state.setProducts);
-  console.log(setProducts)
-  const handleInvoice = (data: any) => {
-    setProducts(data.products)
-    console.log(data);
-    router.push('/download_invoice')
+  const handleInvoice = async(data: any) => {
+    try {      
+      setProducts(data.products)
+      console.log(data);
+      createInvoice(data)
+      router.push('/download_invoice')
+    } catch (error) {
+      console.log(error)
+    }
   }
   const handleCancel = () => { console.log('clicked') }
   return (
