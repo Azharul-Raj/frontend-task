@@ -12,13 +12,13 @@ interface SelectProps{
     border?:boolean
 }
 
-function Select({id,label,register,errors,options,required,border,width}:SelectProps) {
+function Select({id,label,register,options,required,border,width}:SelectProps) {
   return (
     <div className="py-2">
-       {label&& <label className={`block text-md font-semibold ${border?'pl-2':''}`} htmlFor={id}>{label}</label>}
+       <label className={`block text-md font-semibold ${border?'pl-2':''}`} htmlFor={id}>{label}</label>
         <div className="relative ">
         <select className={`${width?width:'w-full'} appearance-none px-1 py-[10px] border border-gray-400 ${border?
-        'rounded-full px-2':'rounded-lg'} focus:outline-none caret-gray-900`} {...register(id,{required})} name="" id="">
+        'rounded-full px-2':'rounded-lg'} focus:outline-none caret-gray-900`} {...register(id,{required})}>
             {
                 options?.map((value,i)=>(
                     <option className="text-xs md:text-base" key={i} value={value}>{value}</option>

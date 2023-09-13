@@ -1,18 +1,35 @@
 "use client"
 import React from 'react'
-import { useForm } from 'react-hook-form'
-
-import { FaTrash } from 'react-icons/fa';
-
+import { useFieldArray, useForm,Control,FieldValues } from 'react-hook-form'
 import FileInput from '../components/Fields/FileInput';
 import Select from '../components/Fields/Select';
 import { clients, productTypes, products, trips } from '../../data/data';
-import Input from '../components/Fields/Input';
+import FieldGroup from '../components/Fields/FieldGroup';
 
+
+const g=['male','female','others']
 
 function Invoice() {
-  const {register,handleSubmit,reset,formState:{errors}}=useForm();
+  const {register,handleSubmit,reset,formState:{errors},control}=useForm(
+  //   {
+  //   defaultValues:{
+  //     client:'',
+  //     trip_no:'',      
+  //     products:{
+  //       product_type:'',
+  //       product:'',
+  //       description:'',
+  //       total:0
+  //     }[]
+  //   }
+  // }
+  );
+  const {append,remove,fields}=useFieldArray({
+    name:'products',
+    control
+  })
   const handleInvoice=(data:any)=>{
+    // delete data.products;
     console.log(data)
   }
   const handleCancel=()=>{console.log('clicked')}
@@ -32,7 +49,7 @@ function Invoice() {
             <Select id='trip_no' border label='Trip' register={register} required options={trips}/>
           </div>
           <div className="w-[45%] md:w-[40%] lg:w-[25%]">
-            <FileInput id='image' register={register} small required label='Plane Image' placeholder='image'/>
+            <FileInput id='image' register={register} small errors={errors} required label='Plane Image' placeholder='image'/>
           </div>
         </div>
         {/* form top section */}
@@ -44,34 +61,34 @@ function Invoice() {
           <div className="flex space-x-2 w-[80%]">
             <h2 className='text-xs md:text-[16px] font-semibold'>Product Type:</h2>
             <h2 className='text-xs md:text-[16px] font-semibold pl-3'>Products:</h2>
-            <h2 className='text-xs md:text-[16px] font-semibold md:pl-16 lg:pl-52'>Description</h2>
+            <h2 className='text-xs md:text-[16px] font-semibold md:pl-16 lg:pl-32'>Description</h2>
           </div>
           <div className="w-[20%]"><h2 className='text-md text-start font-semibold'>Total</h2></div>
         </div>
         <hr />
           {/*  Title of second part*/}
-          <div className="flex items-center justify-around md:justify-between">
-          <div className="space-x-2 flex items-center justify-between">
-            <div className="">
-              <Select id='product_type' width='w-16 md:w-28' register={register} options={productTypes} />
-            </div>
-            <div className="">
-            <Select id='products' width=' w-16 md:w-32 lg:w-72' register={register} options={products} />
-            </div>
-            <div className="">
-            <Input id='description' placeholder='Product for trip ' register={register} border/>
-            </div>
-              
-              
-          </div>
-          <div className="w-1/5 flex space-x-2 items-center">
-            <Input id='total' placeholder='11,500.00' register={register} border/>
-            <div className="">
-              <div className="bg-red-300 p-2 rounded-lg cursor-pointer text-red-600 text-2xl"><FaTrash/></div>
-            </div>
-          </div>
-          </div>
-        <span onClick={handleCancel} className='text-blue-800 font-semibold cursor-pointer'>+ Add Product</span>
+          {/* Dynamic part */}
+          {fields.map((field,idx)=>
+          (
+            <FieldGroup
+            key={idx}
+            idx={idx}
+            register={register}
+            field_id={field.id}
+            description_id={`description-${idx}`}
+            vehicle_id={`vehicle-${idx}`}
+            flight_id={`flight-${idx}`}
+            total_id={`total-${idx}`}
+            option_one={productTypes}
+            option_two={products}
+            remove={remove}
+            errors={errors}
+
+            />
+          )
+          )}
+          {/* Dynamic part */}
+        <button type='button' onClick={()=>{append({field_id:'',description_id:'',vehicle_id:'',total_id:''})}} className='text-blue-800 font-semibold cursor-pointer'>+ Add Product</button>
         {/* Calculation */}
         <div className="flex justify-between">
           <div className=""></div>
@@ -90,7 +107,7 @@ function Invoice() {
         {/* very bottom */}
         <div className="flex justify-between items-center pt-2">
           <div className="flex space-x-3 items-center">
-            <button className='bg-blue-800 text-white px-4 py-2 md:px-8 md:py-3 rounded-full'>Save</button>
+            <button type='submit' className='bg-blue-800 text-white px-4 py-2 md:px-8 md:py-3 rounded-full'>Save</button>
             <div className="text-gray-800 border border-gray-400 px-4 py-2 md:px-8 md:py-3 cursor-pointer rounded-full">Cancel</div>
           </div>
           <div className=" flex justify-between items-center font-semibold text-sm md:text-xl text-blue-600">

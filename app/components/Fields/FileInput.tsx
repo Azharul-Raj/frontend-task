@@ -1,6 +1,6 @@
 
 import React, { useRef, useState } from 'react';
-import { FieldErrors, FieldValues, UseFormRegister } from 'react-hook-form';
+import { FieldError, FieldErrors, FieldErrorsImpl, FieldValues, UseFormRegister } from 'react-hook-form';
 import { FiShare,FiX } from 'react-icons/fi';
 
 interface FileProps {
@@ -10,11 +10,11 @@ interface FileProps {
   register: UseFormRegister<FieldValues>;
   type?: string;
   required: boolean;
-  errors?: FieldErrors<FieldValues>;
+  errors: FieldErrors<FieldValues>;
   small?: boolean;
 }
 
-function FileInput({ id, label, placeholder, register, required, small, errors }: FileProps) {
+function FileInput({ id, label, placeholder, register, small, errors }: FileProps) {
   const fileRef = useRef<HTMLInputElement | null>(null);
   const [imageSrc, setImageSrc] = useState<string | null>(null);
 
@@ -33,11 +33,10 @@ function FileInput({ id, label, placeholder, register, required, small, errors }
   };
   const handleClear=()=>{
     setImageSrc('');
-    
   }
 
-  const { ref, ...rest } = register(id, { required });
-
+  const { ref, ...rest } = register(id, { required:{value:true,message:'Image is required'} });
+  
   return (
     <div className="w-full py-2">
       <label className="text-gray-900 block pb-1 text-md font-semibold">{label}</label>
@@ -79,7 +78,9 @@ function FileInput({ id, label, placeholder, register, required, small, errors }
           />
         </div>
       </div>
-      {errors && <p>{errors.root?.message}</p>}
+      { errors && errors[id] && <p className="text-red-500">Image is required</p>}
+
+      {/* {errorMessage && <p>{errorMessage}</p>} */}
     </div>
   );
 }
