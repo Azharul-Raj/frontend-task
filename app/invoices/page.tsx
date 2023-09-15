@@ -4,23 +4,28 @@ import { useFieldArray, useForm } from 'react-hook-form'
 import { useMutation, gql } from '@apollo/client'
 import FileInput from '../components/Fields/FileInput';
 import Select from '../components/Fields/Select';
-import { clients, productTypes, products, trips } from '../../data/data';
-import FieldGroup from '../components/Fields/FieldGroup';
+import { clients, trips } from '../../data/data';
 import { FormValues } from '../../types/types';
 import useStore from '../hooks/useStore';
 import { useRouter } from 'next/navigation';
+import dynamic from 'next/dynamic';
+import Swal from 'sweetalert2';
+
+const FieldGroup = dynamic(() => import('../components/Fields/FieldGroup'));
 
 const CREATE_INVOICE = gql`
-  mutation CreateInvoice($input: InvoiceInput!) {
-    createInvoice(input: $input) {
-      id,
-      client,
-      image,
-      trip_no,
-      products
+  mutation CreateInvoice($input: InvoiceDataInput!) {
+    createInvoiceData(input: $input) {
+      client
+      trip_no
+      products {
+        product
+        description
+      }
     }
   }
 `;
+
 
 function Invoice() {
   const { register, handleSubmit, reset, formState: { errors }, control } = useForm<FormValues |any>();
@@ -35,17 +40,28 @@ function Invoice() {
 
   const [createInvoice] = useMutation(CREATE_INVOICE);
   const setProducts=useStore((state)=>state.setProducts);
-  const handleInvoice = async(data: any) => {
+  const handleInvoice = async(flightData: any) => {
+    delete flightData.image;
+    // We are not storing the image in any image DB 
+    
+    
+    console.log(flightData)
     try {      
-      setProducts(data.products)
-      console.log(data);
-      createInvoice(data)
+      setProducts(flightData.products)
+      console.log('top try')
+      const { data } = await createInvoice({
+        variables: {
+          input: flightData, // Pass your form data here
+        },
+      });
+      console.log('bottom try')
+      // Handle the response data if needed
+      console.log('Invoice created:', data.createInvoiceData);
       router.push('/download_invoice')
     } catch (error) {
       console.log(error)
     }
   }
-  const handleCancel = () => { console.log('clicked') }
   return (
     <section>
       <div className="py-3 pl-8 lg:pl-0">
@@ -58,7 +74,7 @@ function Invoice() {
           {/* form top section */}
           <div className="bg-white rounded-lg p-5 md:p-7 flex items-center justify-between">
             <div className="w-[40%] md:w-[40%]">
-              <Select id='clint' border label='Select' register={register} required options={clients} />
+              <Select id='client' border label='Select' register={register} required options={clients} />
               <Select id='trip_no' border label='Trip' register={register} required options={trips} />
             </div>
             <div className="w-[45%] md:w-[40%] lg:w-[25%]">
@@ -88,8 +104,6 @@ function Invoice() {
                 idx={idx}
                 register={register}
                 field_id={field.id}
-                option_one={productTypes}
-                option_two={products}
                 remove={remove}
                 errors={errors}
 

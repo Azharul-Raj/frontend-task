@@ -3,7 +3,7 @@ import React from 'react';
 
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 const client = new ApolloClient({
-    uri: 'https://localhost:3001/dummybackend.com', // Replace with your GraphQL endpoint
+    uri: 'http://localhost:4000/graphql', // Replace with your GraphQL endpoint
     cache: new InMemoryCache(),
   });
 interface clientOnlyProps{

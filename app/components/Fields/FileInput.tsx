@@ -2,6 +2,7 @@
 import React, { useRef, useState } from 'react';
 import {  FieldErrors,  FieldValues, UseFormRegister } from 'react-hook-form';
 import { FiShare,FiX } from 'react-icons/fi';
+import Swal from 'sweetalert2';
 
 interface FileProps {
   id: string;
@@ -15,6 +16,7 @@ interface FileProps {
 }
 
 function FileInput({ id, label, placeholder, register, small, errors }: FileProps) {
+  const [isFileExist,setIsFileExist]=useState()
   const fileRef = useRef<HTMLInputElement | null>(null);
   const [imageSrc, setImageSrc] = useState<string | null>(null);
 
@@ -36,7 +38,14 @@ function FileInput({ id, label, placeholder, register, small, errors }: FileProp
   }
 
   const { ref, ...rest } = register(id, { required:{value:true,message:'Image is required'} });
-  
+  // if(errors.root?.message){}
+  if( errors && errors?.products){
+     Swal.fire({
+      icon: 'error',
+      title: 'Product error.',
+      text: 'Add at least one product!',
+    })
+  }
   return (
     <div className="w-full py-2">
       <label className="text-gray-900 block pb-1 text-md font-semibold">{label}</label>

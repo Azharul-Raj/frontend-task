@@ -3,11 +3,17 @@ import React, { useRef } from 'react';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import useStore from '../hooks/useStore';
+import { useRouter } from 'next/navigation';
 
 function DownloadInvoice() {
+  const router=useRouter()
   const pdfRef=useRef(null)
   const products = useStore((state) => state.products);
-  const subtotal = products.reduce((acc, curr) => Number(acc) + Number(curr.total), 0)
+  if(!products.length){
+    console.log('here')
+    return router.push('/invoices')
+  }
+  const subtotal = products.reduce((acc, curr) => Number(acc) + parseFloat(curr.total), 0)
   const downloadPDF=()=>{
     const page=pdfRef.current;
     if(page){
@@ -41,7 +47,7 @@ function DownloadInvoice() {
           <div className="hidden md:block">
             <h2 className='text-4xl font-bold'>Logo</h2>
           </div>
-          <div className="text-gray-400 text-sm md:text-[16px]">
+          <div className="text-gray-400 text-sm md:text-lg">
             <p>1474 Avenue Kwame</p>
             <p>NKRUMAH 10 BP 13395</p>
             <p>10 Ouagadougou, Burkina Faso</p>
@@ -56,12 +62,12 @@ function DownloadInvoice() {
           <div className=""></div>
         </div>
         <div className="flex justify-between items-center pb-3">
-          <div className="text-gray-400 text-sm md:text-[16px]">
+          <div className="text-gray-400 text-sm md:text-lg">
             <p>John Doe</p>
             <p>Lize Transport Organization</p>
             <p>+1 (226) 50 272383</p>
           </div>
-          <div className="text-gray-400 text-sm md:text-[16px]">
+          <div className="text-gray-400 text-sm md:text-lg">
             <p>1474 Avenue Kwame, </p>
             <p>NKRUMAH 10 BP 13395</p>
             <p>10 Ouagadougou, Burkina Faso</p>
@@ -72,7 +78,7 @@ function DownloadInvoice() {
         <div className="">
           <hr />
           <hr />
-          <div className="flex justify-between items-center text-gray-900 text-sm md:text-base font-semibold py-2">
+          <div className="flex justify-between items-center text-gray-900 text-sm md:text-lg font-semibold py-2">
             <p>Products:</p>
             <p>Description:</p>
             <p>Reservation:</p>
@@ -83,7 +89,7 @@ function DownloadInvoice() {
           <hr />
           {
             products.map(({ product_type, product, description, total }, i) => (
-              <div key={i} className="flex justify-between items-center text-xs md:text-base py-2">
+              <div key={i} className="flex justify-between items-center text-xs md:text-lg text-center py-2">
                 <p>{product_type}</p>
                 <p>{description}</p>
                 <p>t22f</p>
@@ -96,15 +102,15 @@ function DownloadInvoice() {
       <hr />
       <div className="flex flex-col justify-end font-semibold items-end py-2">
         <div className="flex justify-between">
-          <p>Subtotal : <span className='pl-3 text-gray-500'>{subtotal}.00</span></p>
+          <p>Subtotal : <span className='pl-3 text-gray-500'>{subtotal?subtotal:''}</span></p>
         </div>
         <div className="flex justify-between">
-          <p className=''>TVA : <span className='pl-3 text-gray-500'>{tva}</span></p>
+          <p className=''>TVA : <span className='pl-3 text-gray-500'>{tva?tva:''}</span></p>
         </div>
       </div>
         <hr />
         <div className="flex justify-end py-2">
-          <p className='font-bold text-blue-700'>Total : <span className=''>{subtotal + tva}</span></p>
+          <p className='font-bold text-blue-700'>Total : {subtotal + tva}</p>
         </div>
         <hr />
       </div>

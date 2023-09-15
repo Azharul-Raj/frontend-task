@@ -1,27 +1,72 @@
 "use client"
-import React from 'react'
-import { FieldErrors, FieldValues, UseFieldArrayRemove, UseFormRegister, useForm } from 'react-hook-form';
+import React, { useState } from 'react'
+import { FieldErrors, FieldValues, UseFieldArrayRemove, UseFormRegister } from 'react-hook-form';
+
+import { productTypes as types } from '../../../data/data';
 import { FiChevronDown } from 'react-icons/fi';
 import { FaTrash } from 'react-icons/fa';
+// import { lists } from '../../../data/data';
+
+const lists = [
+  {
+    name: 'Plane',
+    options: ['Falcon 8X TBA/LTI', 'Falcon 9X TBA/LTI', 'Falcon 11X TBA/LTI', 'Falcon 12X TBA/LTI']
+  },
+  {
+    name: 'Halicopter',
+    options: ['Heli 8X TBA/LTI', 'Heli 9X TBA/LTI', 'Heli 11X TBA/LTI', 'Heli 12X TBA/LTI']
+  },
+  {
+    name: 'Drinks',
+    options: ['Coke', 'Red Bull', 'Pepsi', 'Sprite']
+  },
+  {
+    name: 'Flowers',
+    options: ['Red Rose', 'Night Q', 'Blue Rose', 'Tulip S']
+  },
+  {
+    name: 'PrivateJet',
+    options: ['Phenom 300', 'Learjet 60', 'Citation III', 'Citation XLS']
+  },
+  {
+    name: 'AirBus',
+    options: ['Cyborg-1', 'Penta-Cyborg', 'Cyborg-110', '001-Cyborg']
+  },
+]
+
+
+
 interface groupFieldProps {
   idx: number;
   field_id: string;
-  option_one: string[];
-  option_two: string[];
   errors?: FieldErrors<FieldValues>;
   remove: UseFieldArrayRemove;
   register: UseFormRegister<FieldValues>
 }
 
-function FieldGroup({ field_id, idx, option_one, option_two, errors, remove, register }: groupFieldProps) {
+function FieldGroup({ field_id, idx, errors, remove, register }: groupFieldProps) {
+  const [productType, setProductType] = useState(types);
+  const [products, setProducts] = useState<string[] | undefined>(['Falcon 8X TBA/LTI', 'Falcon 9X TBA/LTI', 'Falcon 11X TBA/LTI', 'Falcon 12X TBA/LTI'])
+  const handleProductChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const items = lists.find(item => item.name == e.target.value);
+    setProducts(items?.options)
+  }
+  console.log(errors)
+  const productTypeOption = register(`products.${idx}.product_type`, { required: true })
   return (
     <div key={field_id} className="flex items-center justify-around md:justify-between">
       <div className="space-x-2 flex items-center justify-between">
         {/* Options1 */}
         <div className="relative">
-          <select className={` appearance-none w-20 text-xs md:text-base  md:w-[104px] lg:w-32 px-1 py-[10px] border border-gray-400 rounded-lg focus:outline-none caret-gray-900`} {...register(`products.${idx}.product_type`, { required: true })} >
+          <select className={` appearance-none w-20 text-xs md:text-base  md:w-[104px] lg:w-32 px-1 py-[10px] border border-gray-400 rounded-lg focus:outline-none caret-gray-900`}
+            {...productTypeOption}
+            onChange={(e) => {
+              productTypeOption.onChange(e)
+              handleProductChange(e)
+            }}
+          >
             {
-              option_one?.map((value, i) => {
+              productType?.map((value, i) => {
 
                 return (
                   <option className="text-xs md:text-base" key={i} value={value}>{value}</option>
@@ -37,7 +82,7 @@ function FieldGroup({ field_id, idx, option_one, option_two, errors, remove, reg
         <div className="relative ">
           <select className={` appearance-none px-1 w-20 text-xs md:text-base md:w-40 lg:w-48 py-[10px] border border-gray-400 rounded-lg focus:outline-none caret-gray-900`} {...register(`products.${idx}.product`, { required: true })}>
             {
-              option_two?.map((value, i) =>
+              products?.map((value, i) =>
               (
                 <option className="text-xs md:text-sm lg:text-base" key={i} value={value}>{value}</option>
               ))
